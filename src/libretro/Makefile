@@ -358,6 +358,23 @@ else ifeq ($(platform), retrofw)
 	COMMON_CFLAGS += -ffast-math -march=mips32 -mtune=mips32 -mhard-float
    COMMON_CFLAGS += -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp
 	LIBS = -lm
+
+# SF2000
+else ifeq ($(platform), sf2000)
+    TARGET := $(TARGET_NAME)_libretro_$(platform).a
+    MIPS=/opt/mips32-mti-elf/2019.09-03-2/bin/mips-mti-elf-
+    CC = $(MIPS)gcc
+    CXX = $(MIPS)g++
+    AR = $(MIPS)ar
+    COMMON_CFLAGS += -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp
+    CFLAGS =-EL -march=mips32 -mtune=mips32 -msoft-float -ffast-math -fomit-frame-pointer
+    CFLAGS+=-G0 -mno-abicalls -ffreestanding
+    CFLAGS+=-fno-use-cxa-atexit
+    CFLAGS+=-DSF2000
+    fpic := -fno-pic
+    CXXFLAGS=$(CFLAGS)
+    STATIC_LINKING = 1
+
 # MIYOO
 else ifeq ($(platform), miyoo)
 	TARGET := $(TARGET_NAME)_libretro.so
@@ -438,7 +455,13 @@ endif
 
 TOPDIR ?= $(CURDIR)
 
+ifeq ($(platform), sf2000)
+COMMON_CFLAGS   += -Wall -DLIBRETRO -D__LIBRETRO__ $(fpic) -DCORE=ON -DBASE=ON -I$(TOPDIR) -I$(TOPDIR)/sys/libretro/config
+else
 COMMON_CFLAGS   += -Wall -DLIBRETRO -D__LIBRETRO__ $(fpic) -DCORE=ON -DSDL2=ON -DBASE=ON -DUSE_FILE32API -I$(TOPDIR) -I$(TOPDIR)/sys/libretro/config
+endif
+
+
 
 ifeq (,$(findstring msvc,$(platform)))
   COMMON_CFLAGS += -ffast-math -fno-strict-aliasing -fvisibility=hidden -fomit-frame-pointer -Wno-sign-compare -Wno-switch -Wno-format-security
