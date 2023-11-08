@@ -245,8 +245,3 @@ SOURCES_C += \
 	$(CORE_DIR)/src/libretro/libretro-common/time/rtime.c \
 	$(CORE_DIR)/src/libretro/libretro-common/vfs/vfs_implementation.c
 endif
-
-ifeq ($(platform), sf2000)
-SOURCES_C += \
-	$(CORE_DIR)/src/libretro/libretro-common/vfs/vfs_implementation.c
-endif
