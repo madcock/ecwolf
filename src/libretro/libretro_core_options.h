@@ -108,6 +108,8 @@ struct retro_core_option_definition option_defs_us[] = {
 		},
 #if defined(RS90)
 		"240x160",
+#elif defined(SF2000)
+		"320x240",
 #elif defined(VITA) || defined(PSP)
 		"480x270",
 #elif defined (_3DS)
@@ -372,7 +374,7 @@ struct retro_core_option_definition option_defs_us[] = {
 		BOOL_OPTIONS,
 		"disabled"
 	},
-#if !defined(_3DS) && !defined(GEKKO) && !defined(RS90)
+#if !defined(_3DS) && !defined(GEKKO) && !defined(RS90) && !defined(SF2000)
 	{
 		"ecwolf-memstore",
 		"Store files in memory",

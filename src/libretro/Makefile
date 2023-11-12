@@ -358,23 +358,19 @@ else ifeq ($(platform), retrofw)
 	COMMON_CFLAGS += -ffast-math -march=mips32 -mtune=mips32 -mhard-float
    COMMON_CFLAGS += -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp
 	LIBS = -lm
-
 # SF2000
 else ifeq ($(platform), sf2000)
     TARGET := $(TARGET_NAME)_libretro_$(platform).a
-    MIPS=/opt/mips32-mti-elf/2019.09-03-2/bin/mips-mti-elf-
+    MIPS:=/opt/mips32-mti-elf/2019.09-03-2/bin/mips-mti-elf-
     CC = $(MIPS)gcc
     CXX = $(MIPS)g++
     AR = $(MIPS)ar
+    CFLAGS = -EL -march=mips32 -mtune=mips32 -msoft-float -G0 -mno-abicalls -fno-pic
+    CFLAGS += -ffast-math -fomit-frame-pointer -ffunction-sections -fdata-sections 
+    CFLAGS += -DSF2000 -DHAVE_STRL -DUSE_OWN_ADDED_SIZE
+    CXXFLAGS := $(CFLAGS) -fno-use-cxa-atexit
     COMMON_CFLAGS += -Dstricmp=strcasecmp -Dstrnicmp=strncasecmp
-    CFLAGS =-EL -march=mips32 -mtune=mips32 -msoft-float -ffast-math -fomit-frame-pointer
-    CFLAGS+=-G0 -mno-abicalls -ffreestanding
-    CFLAGS+=-fno-use-cxa-atexit
-    CFLAGS+=-DSF2000
-    fpic := -fno-pic
-    CXXFLAGS=$(CFLAGS)
     STATIC_LINKING = 1
-
 # MIYOO
 else ifeq ($(platform), miyoo)
 	TARGET := $(TARGET_NAME)_libretro.so
@@ -465,7 +461,11 @@ endif
 
 ifeq (,$(findstring msvc,$(platform)))
   COMMON_CFLAGS += -ffast-math -fno-strict-aliasing -fvisibility=hidden -fomit-frame-pointer -Wno-sign-compare -Wno-switch -Wno-format-security
+ifneq ($(platform), sf2000)
   CXXFLAGS += -fpermissive -std=gnu++98
+else
+  CXXFLAGS += -fpermissive -std=gnu++11
+endif
 ifneq ($(platform), emscripten)
   COMMON_CFLAGS += -fno-unsafe-math-optimizations
 endif
