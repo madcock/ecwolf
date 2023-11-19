@@ -1160,6 +1160,11 @@ void retro_run(void)
 	wl_input_state_t input;
 	long long framestarttic = GetTimeCount();
 
+#if defined(SF2000)
+	//HACK TODO: this temporary hack makes the freeze happen later, but is not a fix!
+	frame_time_cb(0);
+#endif
+
 	// When we load something we end up having very slow
 	// retro_run. Then next invocation to retro_run
 	// tries to cover the same length of time (tics) with a
