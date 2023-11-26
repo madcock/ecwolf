@@ -596,14 +596,14 @@ static void am_multiple_choice (const char *name, unsigned &var, bool &is_update
 
 static void update_variables(bool startup)
 {
-#if defined(RS90) || defined(SF2000)
+#if defined(RS90)
 	store_files_in_memory = false;
 #elif defined(_3DS) || defined(GEKKO)
 	store_files_in_memory = true;
 #else
 	store_files_in_memory = get_bool_option("ecwolf-memstore");
 #endif
-#ifdef RS90 || defined(SF2000)
+#ifdef RS90
 	preload_digital_sounds = false;
 #else
 	preload_digital_sounds = get_bool_option("ecwolf-preload-digisounds");
@@ -1028,7 +1028,7 @@ static void TransformInputs(wl_input_state_t *input)
 		break;
 	}
 
-	if((newly_pressed & (1<<RETRO_DEVICE_ID_JOYPAD_SELECT))) {
+	if(map && (newly_pressed & (1<<RETRO_DEVICE_ID_JOYPAD_SELECT))) {
 		AM_Toggle();
 		return;
 	}
@@ -1161,7 +1161,7 @@ void retro_run(void)
 	long long framestarttic = GetTimeCount();
 
 #if defined(SF2000)
-	//HACK TODO: this temporary hack makes the freeze happen later, but is not a fix!
+	//HACK TODO: this temporary hack is needed to get past the init/loading screen
 	frame_time_cb(0);
 #endif
 

@@ -374,7 +374,7 @@ struct retro_core_option_definition option_defs_us[] = {
 		BOOL_OPTIONS,
 		"disabled"
 	},
-#if !defined(_3DS) && !defined(GEKKO) && !defined(RS90) && !defined(SF2000)
+#if !defined(_3DS) && !defined(GEKKO) && !defined(RS90)
 	{
 		"ecwolf-memstore",
 		"Store files in memory",
