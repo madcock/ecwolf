@@ -398,7 +398,7 @@ void libretro_log(const char *format, ...)
 
 	va_start(va, format);
 	vsnprintf(formatted, sizeof(formatted) - 1, format, va);
-	log_cb(RETRO_LOG_INFO, "%s\n", formatted);
+	log_cb(RETRO_LOG_INFO, "%s", formatted);
 	va_end(va);
 }
 
@@ -406,7 +406,7 @@ void Quit ()
 {
 	struct retro_message msg;
 
-	libretro_log("Fatal error");
+	libretro_log("Fatal error\n");
 	msg.msg    = "Fatal error";
 	msg.frames = fp10s;
 	environ_cb(RETRO_ENVIRONMENT_SET_MESSAGE, &msg);
@@ -596,14 +596,14 @@ static void am_multiple_choice (const char *name, unsigned &var, bool &is_update
 
 static void update_variables(bool startup)
 {
-#if defined(RS90)
+#if defined(RS90) || defined(SF2000)
 	store_files_in_memory = false;
 #elif defined(_3DS) || defined(GEKKO)
 	store_files_in_memory = true;
 #else
 	store_files_in_memory = get_bool_option("ecwolf-memstore");
 #endif
-#ifdef RS90
+#if defined(RS90) || defined(SF2000)
 	preload_digital_sounds = false;
 #else
 	preload_digital_sounds = get_bool_option("ecwolf-preload-digisounds");
@@ -1113,7 +1113,7 @@ static void mixChannel(long long tic, SoundChannelState *channel)
 #define MB(x) ((x) << 20)
 
 size_t limit_sound_cache_size =
-#ifdef RS90 || defined(SF2000)
+#if defined(RS90) || defined(SF2000)
 	MB(5)
 #else
 	MB(15)
@@ -1134,7 +1134,7 @@ void generate_audio(long long tic)
 		// We don't want to keep dropping and reloading the same files every frame
 		if (limit_sound_cache_size <= (touched_sound_size * 3) / 2) {
 			limit_sound_cache_size = (touched_sound_size * 3) / 2;
-#ifdef RS90 || defined(SF2000)
+#if defined(RS90) || defined(SF2000)
 			if (limit_sound_cache_size >= MB(7))
 				limit_sound_cache_size = MB(7);
 #endif		
@@ -1161,7 +1161,7 @@ void retro_run(void)
 	long long framestarttic = GetTimeCount();
 
 #if defined(SF2000)
-	//HACK TODO: this temporary hack is needed to get past the init/loading screen
+	//this is needed to get past the init/loading screen
 	frame_time_cb(0);
 #endif
 

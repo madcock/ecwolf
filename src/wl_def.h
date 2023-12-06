@@ -20,6 +20,11 @@
 #include <minwindef.h>
 #endif
 
+#if defined(SF2000)
+extern "C" void xlog(const char *format, ...);
+#define printf(...) xlog(__VA_ARGS__)
+#endif
+
 #ifdef _MSC_VER
 #define PACKED
 #define PACK_START __pragma(pack(push, 1))

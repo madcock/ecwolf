@@ -451,11 +451,11 @@ endif
 
 TOPDIR ?= $(CURDIR)
 
-ifeq ($(platform), sf2000)
-COMMON_CFLAGS   += -Wall -DLIBRETRO -D__LIBRETRO__ $(fpic) -DCORE=ON -DBASE=ON -I$(TOPDIR) -I$(TOPDIR)/sys/libretro/config
-else
+#ifeq ($(platform), sf2000)
+#COMMON_CFLAGS   += -Wall -DLIBRETRO -D__LIBRETRO__ $(fpic) -DCORE=ON -DBASE=ON -I$(TOPDIR) -I$(TOPDIR)/sys/libretro/config
+#else
 COMMON_CFLAGS   += -Wall -DLIBRETRO -D__LIBRETRO__ $(fpic) -DCORE=ON -DSDL2=ON -DBASE=ON -DUSE_FILE32API -I$(TOPDIR) -I$(TOPDIR)/sys/libretro/config
-endif
+#endif
 
 
 

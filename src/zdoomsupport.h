@@ -10,7 +10,12 @@
 
 #if defined(LIBRETRO) && LIBRETRO
 void libretro_log(const char *format, ...);
+#if defined(SF2000)
+extern "C" void xlog(const char *format, ...);
+#define printf(...) xlog(__VA_ARGS__)
+#else
 #define printf(...) libretro_log(__VA_ARGS__)
+#endif
 #elif defined(__ANDROID__)
 #include <android/log.h>
 #define printf(...) __android_log_print(ANDROID_LOG_INFO,"ECWolf",__VA_ARGS__)

@@ -186,7 +186,11 @@ bool LumpRemapper::LoadMap()
 	int lump = Wads.GetNumForName(mapLumpName);
 	if(lump == -1)
 	{
+#if !defined(SF2000)
 		printf("\n");
+#else
+		printf("LumpRemapper::LoadMap - Wads.GetNumForName failed. mapLumpName=%s\n", mapLumpName.GetChars());
+#endif
 		return false;
 	}
 	FWadLump mapLump = Wads.OpenLumpNum(lump);
