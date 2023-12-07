@@ -945,8 +945,13 @@ void TransformPlayInputs(const wl_input_state_t *input, int newly_pressed)
 		cmd.buttonstate[bt_attack] = 1;
 	if(newly_pressed & (1<<RETRO_DEVICE_ID_JOYPAD_B))
 		cmd.buttonstate[bt_use] = 1;
+#if !defined(SF2000)
 	if(input->button_mask & (1<<RETRO_DEVICE_ID_JOYPAD_Y))
 		cmd.buttonstate[bt_showstatusbar] = 1;
+#else
+	if(newly_pressed & (1<<RETRO_DEVICE_ID_JOYPAD_Y))
+		cmd.buttonstate[bt_nextweapon] = 1;
+#endif
 	if(newly_pressed & (1<<RETRO_DEVICE_ID_JOYPAD_L2))
 		cmd.buttonstate[bt_prevweapon] = 1;
 	if(newly_pressed & (1<<RETRO_DEVICE_ID_JOYPAD_R2))
@@ -1320,7 +1325,11 @@ void retro_set_environment(retro_environment_t cb)
 		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_A,  "Fire" },
 		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_B, "Use" },
 		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_X, "Run" },
+#if !defined(SF2000)
 		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y, "Show Status" },
+#else
+		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_Y, "Next weapon" },
+#endif
 		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_SELECT, "Map" },
 		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_L2,  "Previous weapon" },
 		{ 0, RETRO_DEVICE_JOYPAD, 0, RETRO_DEVICE_ID_JOYPAD_R2, "Next weapon" },
